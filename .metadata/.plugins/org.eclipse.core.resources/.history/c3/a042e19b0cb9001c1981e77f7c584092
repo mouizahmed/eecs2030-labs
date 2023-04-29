@@ -1,0 +1,564 @@
+package pe2;
+
+import java.util.*;
+/* PLEASE DO NOT MODIFY A SINGLE STATEMENT IN THE TEXT BELOW.
+READ THE FOLLOWING CAREFULLY AND FILL IN THE GAPS
+
+I hereby declare that all the work that was required to 
+solve the following problem including designing the algorithms
+and writing the code below, is solely my own and that I received
+no help in creating this solution and I have not discussed my solution 
+with anybody. I affirm that I have read and understood
+the Senate Policy on Academic honesty at 
+https://secretariat-policies.info.yorku.ca/policies/academic-honesty-senate-policy-on/
+and I am well aware of the seriousness of the matter and the penalties that I will face as a 
+result of committing plagiarism in this assignment.
+
+BY FILLING THE GAPS,YOU ARE SIGNING THE ABOVE STATEMENTS.
+
+Full Name: Mouiz Ahmed
+Student Number:  218105536
+Course Section: Z
+*/
+
+
+
+
+public class Hospital {
+	
+	//private Director director;
+	protected List<PhysicianAdministrator> adminList = new ArrayList<PhysicianAdministrator>(); 
+	protected List<Physician> physList = new ArrayList<Physician>(); 
+	protected List<Patient> patientList = new ArrayList<Patient>();
+	
+	private int patNum = 0;
+	private int totalPat = 0;
+	private int e = 0;
+	
+	private Director director;
+	private Physician physician;
+	private PhysicianAdministrator pa;
+	private Patient pat;
+	
+
+	public Hospital(Director director) {
+		// TODO Auto-generated constructor stub
+		this.director = director;
+	}
+
+	public Director getHospDirector() {
+		// TODO Auto-generated method stub
+		return this.director;
+	}
+
+	public Boolean addAdministrator(PhysicianAdministrator admin) {
+		// TODO Auto-generated method stub
+		if (this.adminList.size() < 3) {
+			this.adminList.add(admin);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean hirePhysician(Physician physician) {
+		// TODO Auto-generated method stub
+		if (this.physList.contains(physician) == false) {
+			this.physList.add(physician);
+			
+			for (int i = 0; i < physList.size(); i++) {
+				for (int j = 0; j < adminList.size(); j++) {
+					if (adminList.get(j).specialty == physList.get(i).specialty) {
+						pa = adminList.get(j);
+						break;
+					}
+				}
+			}
+			pa.assignPhysician(physician);
+			
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	
+
+	public void resignPhysician(Physician physician) throws NoSpecialtyException {
+		// TODO Auto-generated method stub
+		int counter = 0;
+		for (int i = 0; i < physList.size(); i++) {
+			if (physList.get(i).getSpecialty() == physician.getSpecialty()) {
+				counter += 1;
+			}	
+		}
+		//System.out.println(counter);
+		if (counter > 1) {
+			for (int j = 0; j < physList.size(); j++) {
+				if (physList.get(j) == physician) {
+					physList.remove(j);	
+					break;
+				}
+			}
+		} else {
+			throw new NoSpecialtyException();
+		}
+		
+		
+	}
+	
+	public List<Physician> extractAllPhysicianDetails() {
+		// TODO Auto-generated method stub
+		return this.physList;
+	}
+
+	public List<Patient> extractAllPatientDetails() {
+		// TODO Auto-generated method stub
+		return this.patientList;
+	}
+
+	public Boolean admitPatient(Patient patient) throws NoSpaceException {
+		// TODO Auto-generated method stub
+		int maxCap = physList.size()*8;
+		
+		//System.out.println("CAP " + maxCap);
+	
+		
+		if (patientList.size() > 500 || patientList.size() >= maxCap) {
+			throw new NoSpaceException();
+		} else if (this.patientList.contains(patient) == false) {
+			patientList.add(patient);
+			System.out.println("PATIENT NUM" + patientList.size());
+			if ( e < physList.size()) {
+				if (patNum < 8) {
+					physician = physList.get(e);
+					physician.assignPatient(patient);
+					patNum = patNum+1; 
+					totalPat += patNum;
+					//System.out.println("PATIENT NUM" + patNum);
+					//System.out.println("SPOT " + patientList.size());
+					
+					
+				} else {
+					patNum = 0;
+					e += 1;
+					if (e < physList.size()) {
+						physician = physList.get(e);
+						physician.assignPatient(patient);
+						//System.out.println("SPOT " + patientList.size());
+					}
+					patNum = patNum+1;
+					totalPat += patNum;
+				}
+			}
+			
+			return true;
+		} else {
+			return false;
+		}
+		
+		
+	}
+
+	public Boolean dischargePatient(Patient patient) {
+		// TODO Auto-generated method stub
+		if (this.patientList.contains(patient) == true) {
+			for (int i = 0; i < this.patientList.size(); i++) {
+				if (this.patientList.get(i) == patient) {
+					this.patientList.remove(i);
+				}
+			}
+			
+//		for (int i = 0; i < this.physList.size(); i++) {
+//			for (int j = 0; j < this.physList.get(i).patL.size(); j++) {
+//				if (physList.get(i).patL.get(j) == patient) {
+//					physList.get(i).patL.remove(j);
+//				}
+//			}
+//		}
+			
+			
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+}
+
+abstract class Person {
+	
+	protected String first;
+	protected String last;
+	protected int age;
+	protected String gender;
+	protected String address;
+	protected String specialty;
+	
+	
+	protected static int patientIDs = 999;
+	
+	protected int setPatientID() {
+		return this.patientIDs+1;
+	}
+	
+	
+}
+
+class Employee extends Person {
+	
+	protected static int employeeIDs = 99;
+	protected double salary = 0.0;
+	
+	protected int setEmployeeID() {
+		return this.employeeIDs+1;
+		
+	}
+	
+}
+
+class Volunteer extends Employee {
+	
+	protected int volunteerID;
+	
+	public Volunteer(String first, String last, int age, String gender, String address) {
+		// TODO Auto-generated constructor stub
+		this.first = first;
+		this.last = last;
+		this.age = age;
+		this.gender = gender;
+		this.address = address;
+		this.volunteerID = setEmployeeID();
+	}
+	
+}
+
+class SalariedEmployee extends Employee {
+	
+}
+
+class Administrator extends SalariedEmployee {
+	
+	protected List<PhysicianAdministrator> list = new ArrayList<PhysicianAdministrator>(); 
+}
+
+class PhysicianAdministrator extends Administrator {
+	protected List<Physician> list2 = new ArrayList<Physician>();
+
+	
+	public PhysicianAdministrator(String first, String last, int age, String gender, String address) {
+		// TODO Auto-generated constructor stub
+		this.first = first;
+		this.last = last;
+		this.age = age;
+		this.gender = gender;
+		this.address = address;
+		Employee.employeeIDs = setEmployeeID();
+	}
+
+	public void assignPhysician(Physician physician) {
+		// TODO Auto-generated method stub
+		if (specialty == physician.specialty) {
+			list2.add(physician);
+		}
+	
+	}
+
+	public void setAdminSpecialtyType(String specialty) {
+		// TODO Auto-generated method stub
+		
+		if (specialty == "Immunology" || specialty == "Neurology" || specialty == "Dermatology") {
+			this.specialty = specialty;
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	public Object getAdminSpecialtyType() {
+		// TODO Auto-generated method stub
+		return this.specialty;
+	}
+
+	public String getName() {
+		// TODO Auto-generated method stub
+		String name = this.first + ", " + this.last;
+		return name;
+	}
+
+	public String getGender() {
+		// TODO Auto-generated method stub
+		return this.gender;
+	}
+
+	public int getAge() {
+		// TODO Auto-generated method stub
+		return this.age;
+	}
+
+	public String getAddress() {
+		// TODO Auto-generated method stub
+		return this.address;
+	}
+
+	public int getEmployeeID() {
+		// TODO Auto-generated method stub
+		return Employee.employeeIDs;
+	}
+
+	public void setSalary(double salary) {
+		// TODO Auto-generated method stub
+		this.salary = salary;
+		
+	}
+
+	public double getSalary() {
+		// TODO Auto-generated method stub
+		return this.salary;
+	}
+	
+	public String toString() {
+		
+		// PysicianAdministrator [[[109,[Elizabeth, Smith, 53, Female, Lawrence Avenue East]], 4521.0], Immunology]
+		return "PysicianAdministrator [[[" + Employee.employeeIDs + ",[" + this.getName() + ", " + this.age + ", " + this.gender + ", " + this.address + "]], " + this.salary + "], " + this.specialty + "]";
+		
+	}
+
+	public List<Physician> extractPhysician() {
+		// TODO Auto-generated method stub
+		return list2;
+	}
+	
+}
+
+class Director extends Administrator {
+	
+	
+	public Director (String first, String last, int age, String gender, String address) {
+		this.first = first;
+		this.last = last;
+		this.age = age;
+		this.gender = gender;
+		this.address = address;
+		Employee.employeeIDs = setEmployeeID(); // THIS CALLS IT TWICE. Dihfdfkljghrdfk
+		
+		
+	}
+
+	public Boolean assignAdministrator(PhysicianAdministrator admin1) {
+		// TODO Auto-generated method stub
+		if (this.list.size() <= 2) {
+			this.list.add(admin1);
+			
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public List<PhysicianAdministrator> extractPhysicianAdmins() {
+		// TODO Auto-generated method stub
+		return this.list;
+	}
+	
+}
+
+class Physician extends SalariedEmployee {
+	
+	List<Patient> patL = new ArrayList<Patient>();
+
+	public Physician(String first, String last, int age, String gender, String address) {
+		// TODO Auto-generated constructor stub
+		this.first = first;
+		this.last = last;
+		this.age = age;
+		this.gender = gender;
+		this.address = address;
+		Employee.employeeIDs = setEmployeeID();
+	}
+
+	public String getName() {
+		// TODO Auto-generated method stub
+		String name = this.first + ", " + this.last;
+		return name;
+	}
+
+	public String getGender() {
+		// TODO Auto-generated method stub
+		return this.gender;
+	}
+
+	public int getAge() {
+		// TODO Auto-generated method stub
+		return this.age;
+	}
+
+	public String getAddress() {
+		// TODO Auto-generated method stub
+		return this.address;
+	}
+
+	public int getEmployeeID() {
+		// TODO Auto-generated method stub
+		return Employee.employeeIDs;
+	}
+
+	
+
+	
+	public String toString() {
+			
+		// Physician [[[137,[Ryan, Mark, 35, Male, Canlish Road]], 0.0]]
+		return "Physician [[[" + Employee.employeeIDs + ",[" + this.getName() + ", " + this.age + ", " + this.gender + ", " + this.address + "]], " + this.salary + "]]";
+			
+	}
+
+	public void setSalary(double salary) {
+		// TODO Auto-generated method stub
+		this.salary = salary;
+		
+	}
+
+	public void setFirstName(String first) {
+		// TODO Auto-generated method stub
+		this.first = first;
+		
+	}
+
+	public void setSpecialty(String specialty) {
+		// TODO Auto-generated method stub
+		if (specialty == "Immunology" || specialty == "Neurology" || specialty == "Dermatology") {
+			this.specialty = specialty;
+		} else {
+			throw new IllegalArgumentException();
+		}
+		
+	}
+
+	public Object getSpecialty() {
+		// TODO Auto-generated method stub
+		return this.specialty;
+	}
+
+	public void setLastName(String last) {
+		// TODO Auto-generated method stub
+		this.last = last;
+		
+	}
+
+	public void setAddress(String address) {
+		// TODO Auto-generated method stub
+		this.address = address;
+		
+	}
+
+	public void setAge(int age) {
+		// TODO Auto-generated method stub
+		this.age = age;
+		
+	}
+
+	public void setGender(String gender) {
+		// TODO Auto-generated method stub
+		this.gender = gender;
+	}
+	
+	// add getName???? idk yet duplicate?
+	
+	public void assignPatient(Patient patient) {
+		patL.add(patient);
+	}
+	
+	public List<Patient> extractPatientDetail() {
+		// TODO Auto-generated method stub
+		return this.patL;
+	}
+	
+}
+
+class Patient extends Person {
+
+	public Patient(String first, String last, int age, String gender, String address) {
+		// TODO Auto-generated constructor stub
+		this.first = first;
+		this.last = last;
+		this.age = age;
+		this.gender = gender;
+		this.address = address;
+		Person.patientIDs = setPatientID();
+	}
+	
+	public String getName() {
+		String name = first + ", " + last;
+		return name;
+	}
+	
+	public String toString() {
+		
+		// Patient [1000, [Nicolas, Jason, 25, Male, Belfield]]
+		return "Patient [" + patientIDs +  ", [" + this.getName() + ", " + this.age + ", " + this.gender + ", " + this.address + "]]"; 
+	}
+
+	public String getAddress() {
+		// TODO Auto-generated method stub
+		return this.address;
+	}
+
+	public int getAge() {
+		// TODO Auto-generated method stub
+		return this.age;
+	}
+
+	public void setAddress(String address) {
+		// TODO Auto-generated method stub
+		this.address = address;
+	}
+
+	public void setFirstName(String first) {
+		// TODO Auto-generated method stub
+		this.first = first;
+	}
+
+	public void setLastName(String last) {
+		// TODO Auto-generated method stub
+		this.last = last;
+	}
+
+	public void setAge(int age) {
+		// TODO Auto-generated method stub
+		this.age = age;
+	}
+
+	public void setGender(String gender) {
+		// TODO Auto-generated method stub
+		this.gender = gender;
+	}
+
+	public String getGender() {
+		// TODO Auto-generated method stub
+		return this.gender;
+	}
+
+	public Integer getPatientID() {
+		// TODO Auto-generated method stub
+		return Person.patientIDs;
+	}
+	
+	
+}
+
+class NoSpecialtyException extends Exception {
+	public NoSpecialtyException() {
+		
+	}
+}
+
+
+class NoSpaceException extends Exception {
+	public NoSpaceException() {
+		
+	}
+}
+
+
+

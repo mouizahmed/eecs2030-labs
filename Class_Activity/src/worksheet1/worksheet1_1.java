@@ -1,0 +1,58 @@
+package worksheet1;
+
+public class worksheet1_1 {
+	public static void main(String[] args) {
+		int [] array = {1, 2, 3, 4};
+		func_1();
+		int x = func_2();
+		System.out.println(x);
+		func_3(x);
+		System.out.println(x);
+		x = func_4(x);
+		int [] array_2 = func_5();
+		print(array);
+		print(array_2);
+		array_2 = func_6(array);
+		print(array);
+		print(array_2);
+		func_7(array);
+		print(array);
+		print(array_2);
+	}
+	static void func_1() {
+		int x = 1;
+		System.out.println(x);
+	}
+	static int func_2() {
+		int x = 2;
+		return x;
+	}
+	static void func_3(int x) {
+		int y = 1;
+		x = x + y;
+		System.out.println(x);
+	}
+	static int func_4(int x) {
+		int y = 3;
+		x = x + y;
+		System.out.println(x);
+		return x;
+	}
+	static int[] func_5() {
+		int[] array = {5, 6, 7, 8};
+		return array;
+	}
+	static int[] func_6(int[] array) {
+		array[0] = 99;
+		return array;
+	}
+	static void func_7(int[] array) {
+		array[3] = 99;
+	}
+	static void print(int[] ar) {
+		for (int i = 0; i < ar.length; i++) {
+			System.out.print(ar[i] + "\t");
+		}
+		System.out.println();
+	}
+}

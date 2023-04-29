@@ -1,0 +1,179 @@
+package pe2;
+
+import java.util.*;
+/* PLEASE DO NOT MODIFY A SINGLE STATEMENT IN THE TEXT BELOW.
+READ THE FOLLOWING CAREFULLY AND FILL IN THE GAPS
+
+I hereby declare that all the work that was required to 
+solve the following problem including designing the algorithms
+and writing the code below, is solely my own and that I received
+no help in creating this solution and I have not discussed my solution 
+with anybody. I affirm that I have read and understood
+the Senate Policy on Academic honesty at 
+https://secretariat-policies.info.yorku.ca/policies/academic-honesty-senate-policy-on/
+and I am well aware of the seriousness of the matter and the penalties that I will face as a 
+result of committing plagiarism in this assignment.
+
+BY FILLING THE GAPS,YOU ARE SIGNING THE ABOVE STATEMENTS.
+
+Full Name: Mouiz Ahmed
+Student Number:  218105536
+Course Section: Z
+*/
+
+
+public class Hospital {
+	
+	private Director director;
+	
+	public Hospital(Director director) {
+		// TODO Auto-generated constructor stub
+		this.director = director;
+	}
+
+	public Director getHospDirector() {
+		// TODO Auto-generated method stub
+		return this.director;
+	}
+	
+	
+}
+
+abstract class Person {
+	
+	protected String first;
+	protected String last;
+	protected int age;
+	protected String gender;
+	protected String address;
+	
+	
+}
+
+class Employee extends Person {
+	
+	protected int employeeID = 99;
+	
+	protected int setEmployeeID() {
+	
+		return this.employeeID+1;
+		
+	}
+	
+}
+
+class Volunteer extends Employee {
+
+	public Volunteer(String first, String last, int age, String gender, String address) {
+		// TODO Auto-generated constructor stub
+		this.first = first;
+		this.last = last;
+		this.age = age;
+		this.gender = gender;
+		this.address = address;
+		setEmployeeID();
+	}
+	
+}
+
+class SalariedEmployee extends Employee {
+	
+}
+
+class Administrator extends SalariedEmployee {
+	
+}
+
+class PhysicianAdministrator extends Administrator {
+	
+	protected String type;
+	protected double salary;
+	
+	public PhysicianAdministrator(String first, String last, int age, String gender, String address) {
+		// TODO Auto-generated constructor stub
+		this.first = first;
+		this.last = last;
+		this.age = age;
+		this.gender = gender;
+		this.address = address;
+	}
+
+	public void setAdminSpecialtyType(String type) {
+		// TODO Auto-generated method stub
+		this.type = type;
+		
+	}
+
+	public Object getAdminSpecialtyType() {
+		// TODO Auto-generated method stub
+		return this.type;
+	}
+
+	public String getName() {
+		// TODO Auto-generated method stub
+		String name = this.first + ", " + this.last;
+		return name;
+	}
+
+	public String getGender() {
+		// TODO Auto-generated method stub
+		return this.gender;
+	}
+
+	public int getAge() {
+		// TODO Auto-generated method stub
+		return this.age;
+	}
+
+	public String getAddress() {
+		// TODO Auto-generated method stub
+		return this.address;
+	}
+
+	public int getEmployeeID() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setSalary(double salary) {
+		// TODO Auto-generated method stub
+		this.salary = salary;
+		
+	}
+
+	public double getSalary() {
+		// TODO Auto-generated method stub
+		return this.salary;
+	}
+	
+}
+
+class Director extends Administrator {
+	
+	public Director (String first, String last, int age, String gender, String address) {
+		this.first = first;
+		this.last = last;
+		this.age = age;
+		this.gender = gender;
+		this.address = address;
+	}
+	
+}
+
+class Physician extends SalariedEmployee {
+
+	public Physician(String first, String last, int age, String gender, String address) {
+		// TODO Auto-generated constructor stub
+	}
+	
+}
+
+class Patient extends Person {
+
+	public Patient(String first, String last, int age, String gender, String address) {
+		// TODO Auto-generated constructor stub
+	}
+	
+}
+
+

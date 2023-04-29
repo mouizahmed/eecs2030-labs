@@ -1,0 +1,158 @@
+package PE1;
+import java.util.ArrayList;
+/* PLEASE DO NOT MODIFY A SINGLE STATEMENT IN THE TEXT BELOW.
+READ THE FOLLOWING CAREFULLY AND FILL IN THE GAPS
+
+I hereby declare that all the work that was required to 
+solve the following problem including designing the algorithms
+and writing the code below, is solely my own and that I received
+no help in creating this solution and I have not discussed my solution 
+with anybody. I affirm that I have read and understood
+the Senate Policy on Academic honesty at 
+https://secretariat-policies.info.yorku.ca/policies/academic-honesty-senate-policy-on/
+and I am well aware of the seriousness of the matter and the penalties that I will face as a 
+result of committing plagiarism in this assignment.
+
+BY FILLING THE GAPS,YOU ARE SIGNING THE ABOVE STATEMENTS.
+
+Full Name: Mouiz Ahmed
+Student Number: 218105536
+Course Section: Z
+*/
+
+public class MinDominantSet {
+	int [][] buildings; 
+	ArrayList<Integer[]> combination; 
+	private int size;
+
+	public static void main(String[] args) {
+		/*
+		 * We don't need this method to solve the problem. I kept
+	     * it here just in case you need to test your code differently.
+		 */
+	}
+	
+	
+	public MinDominantSet () {
+		// insert your code here for task 0
+		this.combination = new ArrayList<Integer[]> ();
+	}
+	
+	public MinDominantSet (int size, int [][] buildings) {
+		// insert your code here for task 2
+		this.combination = new ArrayList<Integer[]> ();
+		this.size = size;
+		this.buildings = new int[size][size];
+		for(int i=0; i<size; i++){
+            for(int j=0; j<size; j++){
+                this.buildings[i][j] = buildings[i][j];
+            }
+        }
+	}
+	
+
+	void combination(int n, int r) {
+		// insert your code here for task1
+		// Note: this method or its helper must be recursive.
+		helper(combination, new Integer[r], 0, n-1, 0);
+		
+	}
+	
+	private void helper(ArrayList<Integer[]> combination, Integer data[], int start, int end, int index) {
+//		if (index == data.length) {
+//			Integer[] combinations = data.clone();
+//			combination.add(combinations);
+//		} else if (start <= end) {
+//			data[index] = start;
+//			helper(combination, data, start+1, end, index+1);
+//			helper(combination, data, start+1, end, index);
+//		}
+		
+		if (index == data.length) {
+			Integer[] combinations = data.clone();
+			combination.add(combinations);
+		} else {
+			int max = Math.min(end, end+1-data.length+index);
+			for (int i=start; i<=max; i++) {
+				data[index] = i;
+				helper(combination, data, i+1, end, index+1);
+			}
+		}
+		
+		
+	}
+	
+// change implementation of above recursion
+	
+	public boolean isEnough(int numMachine) {
+		// insert your code here for task 3
+		// you may want to change the return value
+		
+		combination(this.size, numMachine);
+		
+		// Loops through all combinations
+		for (int i = 0; i < combination.size(); i++) {
+			// Loops through each value in combination
+			for (int j = 0; j < (numMachine-1); j++) {
+				// Loops through all buildings
+				for (int k = 0; k < (this.size-1); k++) {
+					if (buildings[combination.get(i)[j]][k] == 0) {
+						// Loops through the other values in the combination
+						// j += 1;
+						for (int n = j; n < (numMachine-1); n++) {
+							if (buildings[combination.get(i)[n]][k] == 0) {
+								combination.remove(i);
+								
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
+//		for (int i = 0; i<this.size; i++) {
+//			for (int j=1; j<this.size; j++) {
+//				for (int k=0; k<this.combination.get(j).length; k++) {
+//					if (buildings[i][j] == 0) { // checks if 0 and 1 bld are not <=100m
+//						
+//					}
+//				}
+//			}
+//		}
+		
+		
+		
+		return true;
+	}
+	
+	private void helper2(ArrayList<Integer[]> combination, int start, int end, int index) {
+		
+		
+		for (int i=start; i<=end; i++) {
+			
+		}
+		
+		
+	}
+
+	
+	/**
+	 * This method prints the content of the combination.
+	 * we don't need this method to solve this problem, 
+	 * however it is there to help you see the content of 
+	 * the list, when you check for the correctness of your
+	 * code. 
+	 */
+	void print() {
+
+		for (int i = 0; i < combination.size(); i++) {
+			for (int j = 0; j < combination.get(i).length; j++) {
+				System.out.print(combination.get(i)[j]+ "\t"); 
+			}
+			System.out.println(); 		
+		}
+	}
+			 
+} // end of MinDominantSet
+
